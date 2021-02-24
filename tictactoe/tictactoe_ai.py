@@ -34,7 +34,7 @@ def always_pick_winner (player_id: int, curr_board: [int]) -> int:
 
     return random.choice(open_spots)
 
-x_wins, o_wins, draws = tictactoe.run_simulations([random_player, always_pick_winner], 1000, x_always_starts=False)
+x_wins, o_wins, draws = tictactoe.run_simulations([always_pick_winner, always_pick_winner], 1000, x_always_starts=False)
 print ("X won " + str(x_wins) + " times")
 print ("O won " + str(o_wins) + " times")
 print ("It was a draw " + str(draws) + " times")

@@ -134,7 +134,7 @@ def print_end_game(board):
 	else:
 		print("Player " + str(winner) + " won!")
 
-def play_game(choose_pit, should_display=False, start_player=0):
+def play_game(choose_pit, should_display=False, start_player=1):
 	board = set_up(4)
 
 	player_id = start_player
@@ -143,7 +143,7 @@ def play_game(choose_pit, should_display=False, start_player=0):
 		print("First player " + str(player_id))
 		display_board(board)
 
-	while !game_is_over(board):
+	while not game_is_over(board):
 		if should_display == True:
 			print("It's Player " + str(player_id) + "'s turn!")
 
@@ -180,4 +180,4 @@ def human_player(player_id, board):
 		return pit_id
 	except ValueError:
 		print("Invalid input")
-		return prompt_turn(player_id, board)
+		return human_player(player_id, board)
