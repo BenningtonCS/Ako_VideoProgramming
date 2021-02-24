@@ -34,7 +34,31 @@ def always_pick_winner (player_id: int, curr_board: [int]) -> int:
 
     return random.choice(open_spots)
 
+def score_board(player_id: int, board: [int]) -> int:
+    game_state = tictactoe.game_state(board)
+    opponent_id = (player_id + 1) % 2
+    if game_state == player_id: 
+        return 1 
+    elif game_state == opponent_id: 
+        return -1 
+    else:
+        return 0 
+
+print (score_board(0, ["X", "X", "X",
+                       "O", " ", " ",
+                       "O", "O", " "]))
+
+print (score_board(0, ["X", "O", "X",
+                       "X", "O", "O",
+                       "O", "X", "X"]))
+
+print (score_board(0, ["O", "X", "X",
+                       "O", "X", " ",
+                       "O", "O", " "]))
+
+'''
 x_wins, o_wins, draws = tictactoe.run_simulations([always_pick_winner, always_pick_winner], 1000, x_always_starts=False)
 print ("X won " + str(x_wins) + " times")
 print ("O won " + str(o_wins) + " times")
 print ("It was a draw " + str(draws) + " times")
+'''
