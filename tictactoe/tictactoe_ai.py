@@ -44,6 +44,28 @@ def score_board(player_id: int, board: [int]) -> int:
     else:
         return 0 
 
+def minimax(player_id : int, curr_board: [int], depth: int, should_maximize: bool) -> int:
+    # find the score of the board at this moment 
+    # if we're at the bottom (depth == 0) or if the game is finished, return score 
+    # if the game is not finished or not at the bottom of the tree:
+    # find all the open spots
+    # if we're maximizing, we play from player_id's turn 
+        # get all possible boards after player_id's move
+        # score them (recursively)
+        # choose the max score and return it 
+    # otherwise (if we are minimazing) 
+        # get all possible turns after opponent's turn 
+        # score them (recursively)
+        # choose the minimum score and return it 
+    return 0 
+
+def minimax_player(player_id: int, curr_board: [int]) -> int:
+    # find all the open spots 
+    # generate all the possible game boards 
+    # find the scores for each of those game boards (recursively)
+    # pick the spot that produced max score 
+    return 0
+
 print (score_board(0, ["X", "X", "X",
                        "O", " ", " ",
                        "O", "O", " "]))
