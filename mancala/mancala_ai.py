@@ -16,7 +16,7 @@ def random_player(player_id : int, board : [int]) -> int:
         return random.randint(0, 5)
     return random.randint(7, 12)
 
-def next_winning_move(player_id : int, board : [int]) -> int:
+def expert_player(player_id : int, board : [int]) -> int:
     if (player_id == 0):
         for pit_id in range(0, 6):
             new_board = board.copy()
@@ -33,4 +33,4 @@ def next_winning_move(player_id : int, board : [int]) -> int:
     return random.randint(7, 12)
 
 
-mancala.run_simulations([random_player, next_winning_move], 1000, display_boards=False, print_statistics = True)
+mancala.run_simulations([random_player, expert_player], 1000, display_boards=False, print_statistics = True)
