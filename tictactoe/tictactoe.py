@@ -35,7 +35,7 @@ def game_state(board):
 			if board[possible_win[0]] == "X":
 				return X_WIN
 			else:
-				return O_WIN
+				return O_WINq
 
 	empty_spots = list(filter(lambda x: x == " ", board))
 	if len(empty_spots) == 0:
