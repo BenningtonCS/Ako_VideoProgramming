@@ -10,7 +10,7 @@ def get_open_spots (curr_board: [int]) -> int:
 # to make AI that randomly fills in the spots with X or O 
 # function random_player takes in player_id, which is integer, and curr_board which is an index, and returns an int
 def random_player (player_id: int, curr_board: [int]) -> int:  
-    # first, find all the open slots 
+    # first, find all the open spots 
     open_spots = get_open_spots(curr_board)
     # The len() function returns the number of items in an object.
     # When the object is a string, the len() function returns the number of characters in the string.
