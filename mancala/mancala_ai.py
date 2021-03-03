@@ -48,11 +48,6 @@ def score_board(player_id: int, board: [int]) -> (int, bool):
     return game_state, mancala.game_is_over(board)
     # This function is from Andrew's code!
 
-    # player0 goal is 7
-    # player1 goal is 13
-    # board [7] - board [13]
-    # if player id is 0, if it is 1 return the opposite 
-
 def generate_next_board(player_id: int, board: [int], pit_to_play: int) -> [int]:
     next_player, next_board = mancala.sow(pit_to_play, player_id, board)
     return next_board
@@ -101,9 +96,9 @@ def minimax_player(player_id : int, board : [int]) -> int:
     playable_pits = get_full_pits(board, player_id)
     possible_boards = list(map(lambda x: generate_next_board(player_id, board, x), playable_pits))
     # print(possible_boards)
-    scored_boards = list(map(lambda x: minimax(player_id, x, 5, False), possible_boards))
+    scored_boards = list(map(lambda x: minimax(player_id, x, 3, False), possible_boards))
     best_score = max(list(scored_boards))
     best_moves = [x for x, score in zip(playable_pits, scored_boards) if score == best_score]
     return random.choice(best_moves)
 
-mancala.run_simulations([minimax_player, mancala.human_player], 1, display_boards=True, print_statistics = True)
+mancala.run_simulations([minimax_player, random_player], 100, display_boards = False, print_statistics = True)
