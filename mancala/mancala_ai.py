@@ -32,37 +32,58 @@ def expert_player(player_id : int, board : [int]) -> int:
             return pit_id
     return random.randint(7, 12)
 
-def playable_pits(board: [int]) -> int:
-    return [x for x in range(len(board)) if board[x] == " "]
+def game_state(player_id: id, board: [int]) -> int:
+    opponent_id = (player_id + 1) % 2
+    if mancala.game_is_over(board) and mancala.who_won(board) == player_id:
+        return 1
+    elif mancala.game_is_over(board) and mancala.who_won(board) == opponent_id:
+        return -1
+    elif mancala.game_is_over(board) and mancala.who_won(board) == 2:
+        return 2
+    else:
+        return 0
 
 def score_board(player_id: int, board: [int]) -> (int, bool):
-    game_state = mancala.game_is_over(board) and mancala.who_won(board) 
     opponent_id = (player_id + 1) % 2
-    if game_state  == player_id: 
+    if game_state == player_id: # if winning 
         return 1, True
-    elif game_state == opponent_id: 
+    elif game_state == opponent_id: # if losing 
         return -1, True
-    elif game_state == 2:
+    elif game_state == 2: # if a tie 
         return 0, True 
-    else: 
+    else:                 # if game is over 
         return 0, False
 
-def generate_possible_boards(player_id: int, board: [int], pit_to_play: int) -> [int]:
-    new_board = board.copy()
-    new_board[pit_to_play] = player_id
-    return new_board
+def generate_next_board(player_id: int, board: [int], pit_to_play: int) -> [int]:
+    next_player, next_board = mancala.sow(pit_to_play, player_id, board)
+    return next_board
+
+def get_full_pits (board: [int], player_id: int) -> int:
+    if player_id == 0:
+        result = []
+        for i in range(0, 6):
+            if board[i] != 0:
+                result.append(i)
+        
+        return result
+    else:
+        result = []
+        for i in range(7, 13):
+            if board[i] != 0:
+                result.append(i)
+        
+        return result
 
 def minimax(player_id : int, board: [int], depth: int, should_maximize: bool, alpha = float('-inf'), beta = float('inf')) -> int:
     curr_score, is_done = score_board(player_id, board)
     if depth == 0 or is_done:
         return curr_score * (depth + 1)
-    open_pits = playable_pits(board)
+    playable_pits = get_full_pits(board, player_id)
     if should_maximize:
         max_score = float ('-inf')
-        for pit in open_pits:
-            possible_board = generate_possible_boards(player_id, board, pit)
-            # score them (recursively)
-            score = minimax(player_id, possible_board, depth - 1, False, alpha, beta)
+        for pit in playable_pits:
+            board1 = generate_next_board(player_id, board, pit)
+            score = minimax(player_id, board1, depth - 1, False, alpha, beta)
             max_score = max(max_score, score)
             alpha = max(alpha, max_score)
             if alpha >= beta:
@@ -70,19 +91,20 @@ def minimax(player_id : int, board: [int], depth: int, should_maximize: bool, al
         return max_score
     else:
         min_score = float ('inf')
-        for pit in open_pits:
-            possible_board = generate_possible_boards((player_id + 1) % 2, board, pit)
-            score = minimax(player_id, possible_board, depth - 1, True, alpha, beta)
+        for pit in playable_pits:
+            board1 = generate_next_board((player_id + 1) % 2, board, pit)
+            score = minimax(player_id, board1, depth - 1, True, alpha, beta)
             min_score = min(min_score, score)
             beta = min(beta, min_score)
         return min_score
 
-def minimax_player(player_id: int, board: [int]) -> int:
-    open_pits = playable_pits(board)
-    possible_boards = list(map(lambda x: generate_possible_boards(player_id, board, x), open_pits))
-    scored_boards = list(map(lambda x: minimax(player_id, x, 30, False), possible_boards))
+def minimax_player(player_id : int, board : [int]) -> int:
+    playable_pits = get_full_pits(board, player_id)
+    possible_boards = list(map(lambda x: generate_next_board(player_id, board, x), playable_pits))
+    # print(possible_boards)
+    scored_boards = list(map(lambda x: minimax(player_id, x, 4, False), possible_boards))
     best_score = max(list(scored_boards))
-    best_moves = [x for x, score in zip(open_pits, scored_boards) if score == best_score]
+    best_moves = [x for x, score in zip(playable_pits, scored_boards) if score == best_score]
     return random.choice(best_moves)
 
-mancala.run_simulations([minimax_player, expert_player], 3, display_boards=False, print_statistics = True)
+mancala.run_simulations([minimax_player, random_player], 100, display_boards=False, print_statistics = True)
