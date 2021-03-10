@@ -155,8 +155,8 @@ def calculate_upper_confidence_bound(wins: int, pulls: int, c: float, t: float) 
         return float ('inf')
     return wins/pulls + c * math.sqrt(math.log(t) / pulls)
 
-    game_state = mancala.get_score(mancala_node_player.player_id, mancala_node_board.board )
-    return game_state, mancala.game_is_over(board)
+    #game_state = mancala.get_score(mancala_node_player.player_id, mancala_node_board.board )
+    #return game_state, mancala.game_is_over(board)
 
 def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     root = MancalaNode(1 - player_id, board)
@@ -182,9 +182,12 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     return winning_child.pit
 
 def competition_player (player_id : int, board : [int]) -> int:
+    return minimax_player(player_id, board)
+
+def competition_player2 (player_id : int, board : [int]) -> int:
     return monte_carlo_player(player_id, board)
 
-mancala.run_simulations([monte_carlo_player, random_player], 1000, display_boards = False, print_statistics = True)
+mancala.run_simulations([monte_carlo_complicated_player, random_player], 100, display_boards = False, print_statistics = True)
 
 
 ''' def score_board_Monte_Carlo(player_id: int, board: [int]) -> (int, bool):
