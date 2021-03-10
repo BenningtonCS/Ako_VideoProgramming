@@ -101,4 +101,98 @@ def minimax_player(player_id : int, board : [int]) -> int:
     best_moves = [x for x, score in zip(playable_pits, scored_boards) if score == best_score]
     return random.choice(best_moves)
 
-mancala.run_simulations([minimax_player, random_player], 100, display_boards = False, print_statistics = True)
+def playout(player_id: int, board : [int]) -> bool:
+    score, is_finished = score_board(player_id, board)
+    if is_finished:
+        return score == 1
+    next_board = board
+    next_player = 1 - player_id 
+    while not is_finished:
+        pit_to_play = random_player(next_player, next_board)
+        next_board = generate_next_board (next_player, next_board, pit_to_play)
+        score, is_finished = score_board(player_id, next_board)
+        next_player = 1 - next_player
+    return score ==1
+
+def monte_carlo_player(player_id : int, board : [int]) -> int:
+    playable_pits = get_full_pits(board, player_id)
+    possible_boards = list(map(lambda x: generate_next_board(player_id, board, x), playable_pits))
+    num_simulations = 10
+    wins=[sum ([1 for _ in range(num_simulations) if playout(player_id, board1)]) for board1 in possible_boards]
+    index = max (range(len(playable_pits)), key = lambda i: wins [i])
+    return playable_pits[-1]
+    # worked on this one with Delaine! 
+
+class MancalaNode:
+    def __init__(self, player_id: int, board: [int], parent = None, pit = -1 ):
+        self.player_id = player_id
+        self.board = board
+        self.parent = parent 
+        self.pit = pit
+        self.children = [] 
+        self.wins = 0 
+        self.pulls = 0
+    
+    def is_leaf(self):
+        return self.children == []
+    
+    def add_child(self, player_id: int, board: [int], pit: int):
+        self.children.append(MancalaNode(self, 1 - player_id, board, pit))
+
+    def find_best_ucb(self):
+        return max(self.children, key = lambda child: calculate_upper_confidence_bound(child.wins, child.pulls, 2, self.pulls))
+
+    def record_play(self, did_score: bool, board: [int] ):
+        current_store_value = board[13]
+
+        if board[13] == current_store_value +1:
+            self.wins += 1
+        if self.parent:
+            self.parent.record_play(not did_score)
+
+
+def generate_next_board_monte_carlo(player_id: int, board: [int], pit_to_play: int) -> [int]:
+    boards = []
+    for i in range(5):
+       next_board = mancala.sow(pit_to_play, player_id, board)
+       boards.append[next_board]
+
+    return boards
+
+def calculate_upper_confidence_bound(wins: int, pulls: int, c: float, t: float) -> float:
+    if pulls == 0:
+        return float ('inf')
+    return wins/pulls + c * math.sqrt(math.log(t) / pulls)
+
+def score_board_Monte_Carlo(player_id: int, board: [int]) -> (int, bool):
+    mancala_node_board = MancalaNode(player_id,board)
+    mancala_node_player = MancalaNode(player_id,board)
+
+    game_state = mancala.get_score(mancala_node_player.player_id, mancala_node_board.board )
+    return game_state, mancala.game_is_over(board)
+
+def competition_player(player_id : int, board : [int]) -> int:
+    root = MancalaNode(1 - player_id, board)
+
+    num_simulations = 10 
+    for _ in range (num_simulations):
+        curr_node = root
+        while not curr_node.is_leaf():
+            curr_node = curr_node.find_best_ucb()
+            print("Current Node",curr_node)
+        score, is_finished = score_board_Monte_Carlo(curr_node.player_id, curr_node.board) 
+        print("Player_ID : ",curr_node.player_id, "Current Board",curr_node.board)
+        if not is_finished:
+            playable_pits = get_full_pits(curr_node.board, curr_node.player_id)
+            possible_boards = list(map(lambda x: generate_next_board(1 - curr_node.player_id, curr_node.board, x), playable_pits))
+            for board1, pit in zip(possible_boards, playable_pits):
+                curr_node.add_child(player_id, board1, pit)
+        curr_node = random.choice(curr_node.children)
+    did_score = playout(curr_node.player_id, curr_node.board)
+    curr_node.record_play(did_score)
+
+    winning_child = max(root.children, key = lambda child: child.wins / child.pulls)
+    return winning_child.pit
+
+
+mancala.run_simulations([ random_player, competition_player], 100, display_boards = False, print_statistics = True)
