@@ -122,7 +122,7 @@ def monte_carlo_player(player_id : int, board : [int]) -> int:
     index = max (range(len(playable_pits)), key = lambda i: wins [i])
     return playable_pits[-1]
     # worked on this one with Delaine! 
-'''
+
 class MancalaNode:
     def __init__(self, player_id: int, board: [int], parent = None, pit = -1 ):
         self.player_id = player_id
@@ -155,20 +155,8 @@ def calculate_upper_confidence_bound(wins: int, pulls: int, c: float, t: float) 
         return float ('inf')
     return wins/pulls + c * math.sqrt(math.log(t) / pulls)
 
-def score_board_Monte_Carlo(player_id: int, board: [int]) -> (int, bool):
-    mancala_node_board = MancalaNode(player_id,board)
-    mancala_node_player = MancalaNode(player_id,board)
-
     game_state = mancala.get_score(mancala_node_player.player_id, mancala_node_board.board )
     return game_state, mancala.game_is_over(board)
-
-def generate_next_board_monte_carlo(player_id: int, board: [int], pit_to_play: int) -> [int]:
-    boards = []
-    for i in range(5):
-       next_board = mancala.sow(pit_to_play, player_id, board)
-       boards.append[next_board]
-
-    return boards
 
 def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     root = MancalaNode(1 - player_id, board)
@@ -179,7 +167,7 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
         while not curr_node.is_leaf():
             curr_node = curr_node.find_best_ucb()
             print("Current Node",curr_node)
-        score, is_finished = score_board_Monte_Carlo(curr_node.player_id, curr_node.board) 
+        score, is_finished = score_board(curr_node.player_id, curr_node.board) 
         print("Player_ID : ",curr_node.player_id, "Current Board",curr_node.board)
         if not is_finished:
             playable_pits = get_full_pits(curr_node.board, curr_node.player_id)
@@ -192,8 +180,22 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
 
     winning_child = max(root.children, key = lambda child: child.wins / child.pulls)
     return winning_child.pit
-'''
+
 def competition_player (player_id : int, board : [int]) -> int:
-    return minimax_player(player_id, board)
+    return monte_carlo_player(player_id, board)
 
 mancala.run_simulations([monte_carlo_player, random_player], 1000, display_boards = False, print_statistics = True)
+
+
+''' def score_board_Monte_Carlo(player_id: int, board: [int]) -> (int, bool):
+    mancala_node_board = MancalaNode(player_id,board)
+    mancala_node_player = MancalaNode(player_id,board)
+    
+    def generate_next_board_monte_carlo(player_id: int, board: [int], pit_to_play: int) -> [int]:
+    boards = []
+    for i in range(5):
+       next_board = mancala.sow(pit_to_play, player_id, board)
+       boards.append[next_board]
+
+    return boards
+'''
