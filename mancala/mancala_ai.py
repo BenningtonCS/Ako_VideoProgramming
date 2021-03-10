@@ -170,7 +170,7 @@ def generate_next_board_monte_carlo(player_id: int, board: [int], pit_to_play: i
 
     return boards
 
-def competition_player(player_id : int, board : [int]) -> int:
+def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     root = MancalaNode(1 - player_id, board)
 
     num_simulations = 10 
@@ -193,5 +193,7 @@ def competition_player(player_id : int, board : [int]) -> int:
     winning_child = max(root.children, key = lambda child: child.wins / child.pulls)
     return winning_child.pit
 '''
+def competition_player (player_id : int, board : [int]) -> int:
+    return minimax_player(player_id, board)
 
-mancala.run_simulations([monte_carlo_player, random_player], 10000, display_boards = False, print_statistics = True)
+mancala.run_simulations([monte_carlo_player, random_player], 1000, display_boards = False, print_statistics = True)
