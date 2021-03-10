@@ -181,7 +181,7 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     winning_child = max(root.children, key = lambda child: child.wins / child.pulls)
     return winning_child.pit
 
-
+#THIS IS THE COMPETITION PLAYER
 def competition_player (player_id : int, board : [int]) -> int:
     return monte_carlo_player(player_id, board)
 
