@@ -137,18 +137,24 @@ class MancalaNode:
         return self.children == []
     
     def add_child(self, player_id: int, board: [int], pit: int):
-        self.children.append(MancalaNode(self, 1 - player_id, board, pit))
+        self.children.append(MancalaNode(1 - player_id, board, parent=self, pit=pit))
 
     def find_best_ucb(self):
         return max(self.children, key = lambda child: calculate_upper_confidence_bound(child.wins, child.pulls, 2, self.pulls))
 
-    def record_play(self, did_score: bool, board: [int] ):
-        current_store_value = board[13]
+    def record_play(self, did_score: bool):
+        current_store_value = self.board[13]
 
-        if board[13] == current_store_value +1:
+        if self.board[13] == current_store_value +1:
             self.wins += 1
         if self.parent:
             self.parent.record_play(not did_score)
+            
+    def win_ratio(self):
+        if self.pulls > 0:
+            return self.wins / self.pulls
+        else:
+            return 0
 
 def calculate_upper_confidence_bound(wins: int, pulls: int, c: float, t: float) -> float:
     if pulls == 0:
@@ -166,7 +172,8 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
         curr_node = root
         while not curr_node.is_leaf():
             curr_node = curr_node.find_best_ucb()
-            print("Current Node",curr_node)
+            print("Current Node", curr_node)
+        
         score, is_finished = score_board(curr_node.player_id, curr_node.board) 
         print("Player_ID : ",curr_node.player_id, "Current Board",curr_node.board)
         if not is_finished:
@@ -178,14 +185,14 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
     did_score = playout(curr_node.player_id, curr_node.board)
     curr_node.record_play(did_score)
 
-    winning_child = max(root.children, key = lambda child: child.wins / child.pulls)
+    winning_child = max(root.children, key = lambda child: child.win_ratio())
     return winning_child.pit
 
 #THIS IS THE COMPETITION PLAYER
 def competition_player (player_id : int, board : [int]) -> int:
     return monte_carlo_player(player_id, board)
 
-mancala.run_simulations([random_player, monte_carlo_complicated_player], 100, display_boards = False, print_statistics = True)
+mancala.run_simulations([random_player, monte_carlo_complicated_player], 1, display_boards = False, print_statistics = True)
 
 
 ''' def score_board_Monte_Carlo(player_id: int, board: [int]) -> (int, bool):
