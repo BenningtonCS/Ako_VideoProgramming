@@ -1,2 +1,0 @@
-# Ako_VideoProgramming Notes
- 

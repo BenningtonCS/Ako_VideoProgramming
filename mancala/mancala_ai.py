@@ -112,7 +112,7 @@ def monte_carlo_player(player_id : int, board : [int]) -> int:
     index = max (range(len(playable_pits)), key = lambda i: wins [i])
     return playable_pits[-1]
     # worked on this one with Delaine! 
-
+'''
 class MancalaNode:
     def __init__(self, player_id: int, board: [int], parent = None, pit = -1 ):
         self.player_id = player_id
@@ -174,6 +174,6 @@ def monte_carlo_complicated_player(player_id : int, board : [int]) -> int:
 
 #THIS IS THE COMPETITION PLAYER
 def competition_player (player_id : int, board : [int]) -> int:
-    return monte_carlo_player(player_id, board)
-
-mancala.run_simulations([random_player, monte_carlo_complicated_player], 100, display_boards = False, print_statistics = True)
+    return minimax_player(player_id, board)
+'''
+mancala.run_simulations([minimax_player, monte_carlo_player], 1000, display_boards = False, print_statistics = True)
