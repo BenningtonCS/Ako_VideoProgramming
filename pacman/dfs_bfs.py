@@ -47,18 +47,20 @@ def DepthFirstSearch(goal, stack):
 
 
 class Queue:
-
     def __init__(self):
-        self._list = LinkedList()
+        self.items = []
 
-    def is_empty(self):
-        return self._list.is_empty()
+    def isEmpty(self):
+        return self.items == []
 
-    def enqueue(self, value):
-        self._list.push_end_value(value)
+    def enqueue(self, item):
+        self.items.insert(0,item)
 
     def dequeue(self):
-        return self._list.pop_begin_value()
+        return self.items.pop()
+
+    def size(self):
+        return len(self.items)
 
 
 queue = Queue
