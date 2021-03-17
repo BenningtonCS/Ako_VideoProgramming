@@ -1,3 +1,5 @@
+import pacman
+
 def DepthFirstSearch(problem):
     # emtpy container for visited nodes 
     visited_nodes = []
@@ -29,7 +31,8 @@ def DepthFirstSearch(problem):
     return forwards_path
 
 
-def BreadthFirtsSearch(goal, queue):
+
+def BreadthFirtsSearch(problem):
     # emtpy container for visited nodes 
     visited_nodes = []
     # empty dictionary for transitions
@@ -47,6 +50,7 @@ def BreadthFirtsSearch(goal, queue):
             if not i in visited:
                 queue.enqueue(i)
                 transitions.update({current_node:i})
+
 
     backwards_path = []
     current_node = goal
