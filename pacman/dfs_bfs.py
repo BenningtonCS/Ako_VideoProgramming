@@ -55,18 +55,17 @@ def BreadthFirtsSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    # emtpy container for visited nodes 
     visited_nodes = []
-    # empty dictionary for transitions
     transitions = {}
-    # priority queue
+    costs = {}
     pq = PriorityQueue()
-    pq.push(problem.getStartState())
+    pq.push(problem.getStartState(cost = 0))
     while not pq.isEmpty():
         current_node = pq.pop()
+        visited_nodes.append(current_node)
         if problem.isGoalState(current_node):
             return find_path(current_node, transitions)
-            visited_nodes.append(current_node)
+            
         
         for i in problem.getSuccessors(current_node):
             if not i in visited_nodes:

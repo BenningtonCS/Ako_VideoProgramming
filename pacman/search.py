@@ -108,7 +108,7 @@ def depthFirstSearch(problem):
         current_node = s.pop()
         visited_nodes.append(current_node)
         if problem.isGoalState(current_node):
-            path = find_path(current_node, transitions)
+            #path = find_path(current_node, transitions)
             return find_path(current_node, transitions)
             
 
@@ -130,7 +130,7 @@ def breadthFirstSearch(problem):
         current_node = q.pop()
         visited_nodes.append(current_node)
         if problem.isGoalState(current_node):
-            path = find_path(current_node, transitions)
+            #path = find_path(current_node, transitions)
             return find_path(current_node, transitions)
             
 
