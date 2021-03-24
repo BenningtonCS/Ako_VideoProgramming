@@ -93,7 +93,7 @@ def depthFirstSearch(problem):
     # empty dictionary for transitions
     transitions = {}
     # stack
-    s = Stack()
+    s = util.Stack()
     s.push(problem.getStartState())
     while not s.isEmpty(): 
         current_node = s.pop()
@@ -126,7 +126,7 @@ def breadthFirstSearch(problem):
     # empty dictionary for transitions
     transitions = {}
     # queue
-    q = Queue()
+    q = util.Queue()
     q.push(problem.getStartState())
     while not q.isEmpty():
         current_node = q.pop()
@@ -160,13 +160,13 @@ def uniformCostSearch(problem):
     # empty dictionary for transitions
     transitions = {}
     # priority queue
-    pq = PriorityQueue()
+    pq = util.PriorityQueue()
     # make an empty heap for the paths that led to a goal with the cost of each path
     pq.push(problem.getStartState())
     while not pq.isEmpty():
         current_node = pq.pop()
         if problem.isGoalState(current_node):
-            # appnd the path of the goal state to a new heap
+            # append the path of the goal state to a new heap
             #return find_path(current_node, transitions) - not needed, just keeping it here for reference
             visited_nodes.append(current_node)
         
