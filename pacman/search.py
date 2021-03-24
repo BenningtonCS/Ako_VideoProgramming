@@ -161,11 +161,13 @@ def uniformCostSearch(problem):
     transitions = {}
     # priority queue
     pq = PriorityQueue()
+    # make an empty heap for the paths that led to a goal with the cost of each path
     pq.push(problem.getStartState())
     while not pq.isEmpty():
         current_node = pq.pop()
         if problem.isGoalState(current_node):
-            return find_path(current_node, transitions)
+            # appnd the path of the goal state to a new heap
+            #return find_path(current_node, transitions) - not needed, just keeping it here for reference
             visited_nodes.append(current_node)
         
         for i in problem.getSuccessors(current_node):
@@ -174,7 +176,9 @@ def uniformCostSearch(problem):
                 transitions.update({current_node:i})
 
     def find_path(goal, transition):
-
+        # this function has to go through the heap that has all the different paths to a goal 
+        # then pop and return the head of that heap
+        # because that head is going to be the cheapest one 
         backwards_path = []
         current_node = goal
 
