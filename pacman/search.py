@@ -73,6 +73,17 @@ def tinyMazeSearch(problem):
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
 
+def find_path(goal, transitions):
+    backwards_path = []
+    current_node = goal
+
+    while current_node in transitions and transitions[current_node]:
+        backwards_path.append(transitions[current_node][1])
+        current_node = transitions[current_node][0]
+
+    backwards_path.reverse()
+    return list(backwards_path)
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -88,78 +99,51 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    # emtpy container for visited nodes 
+ 
     visited_nodes = []
-    # empty dictionary for transitions
     transitions = {}
-    # stack
     s = util.Stack()
     s.push(problem.getStartState())
     while not s.isEmpty(): 
         current_node = s.pop()
+        visited_nodes.append(current_node)
         if problem.isGoalState(current_node):
+            path = find_path(current_node, transitions)
             return find_path(current_node, transitions)
-            visited_nodes.append(current_node)
+            
 
-        for i in problem.getSuccessors(current_node):
+        for i, direction, cost in problem.getSuccessors(current_node):
             if not i in visited_nodes:
                 s.push(i)
-                transitions.update({current_node:i})
-
-    def find_path(goal, transition):
-        backwards_path = []
-        current_node = goal
-
-        while current_node in transitions:
-            backwards_path.append(current_node)
-            current_node = transitions[current_node]
-
-        forwards_path = backwards_path.reverse
-        return forwards_path
+                transitions[i] = (current_node, direction)
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    # emtpy container for visited nodes 
+
     visited_nodes = []
-    # empty dictionary for transitions
     transitions = {}
-    # queue
     q = util.Queue()
     q.push(problem.getStartState())
-    while not q.isEmpty():
+    while not q.isEmpty(): 
         current_node = q.pop()
+        visited_nodes.append(current_node)
         if problem.isGoalState(current_node):
+            path = find_path(current_node, transitions)
             return find_path(current_node, transitions)
-            visited_nodes.append(current_node)
-        
-        for i in problem.getSuccessors(current_node):
+            
+
+        for i, direction, cost in problem.getSuccessors(current_node):
             if not i in visited_nodes:
                 q.push(i)
-                transitions.update({current_node:i})
-
-    def find_path(goal, transition):
-
-        backwards_path = []
-        current_node = goal
-
-        while current_node in transitions:
-            backwards_path.append(current_node)
-            current_node = transitions[current_node]
-
-        forwards_path = backwards_path.reverse
-        return forwards_path
-
+                transitions[i] = (current_node, direction)
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    # emtpy container for visited nodes 
     visited_nodes = []
-    # empty dictionary for transitions
     transitions = {}
-    # priority queue
     pq = util.PriorityQueue()
     # make an empty heap for the paths that led to a goal with the cost of each path
     pq.push(problem.getStartState())
@@ -167,27 +151,13 @@ def uniformCostSearch(problem):
         current_node = pq.pop()
         if problem.isGoalState(current_node):
             # append the path of the goal state to a new heap
-            #return find_path(current_node, transitions) - not needed, just keeping it here for reference
+            #return uniform_find_path(current_node, transitions) - not needed, just keeping it here for reference
             visited_nodes.append(current_node)
         
         for i in problem.getSuccessors(current_node):
             if not i in visited_nodes:
                 pq.push(i)
                 transitions.update({current_node:i})
-
-    def find_path(goal, transition):
-        # this function has to go through the heap that has all the different paths to a goal 
-        # then pop and return the head of that heap
-        # because that head is going to be the cheapest one 
-        backwards_path = []
-        current_node = goal
-
-        while current_node in transitions:
-            backwards_path.append(current_node)
-            current_node = transitions[current_node]
-
-        forwards_path = backwards_path.reverse
-        return forwards_path
 
 def nullHeuristic(state, problem=None):
     """
