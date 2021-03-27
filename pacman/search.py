@@ -137,27 +137,52 @@ def breadthFirstSearch(problem):
         for i, direction, cost in problem.getSuccessors(current_node):
             if not i in visited_nodes:
                 q.push(i)
+                visited_nodes.append(i)
                 transitions[i] = (current_node, direction)
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    visited_nodes = []
+    # make a dictionary for transitions
     transitions = {}
+    # make a dictionary for costs
+    costs = {}
+    visited_nodes = []
+    # make a priority queue
     pq = util.PriorityQueue()
-    # make an empty heap for the paths that led to a goal with the cost of each path
-    pq.push(problem.getStartState())
+    full_cost = 0
+    # add the starting state to the PQ with cost 0
+    pq.push(problem.getStartState(), 0)
+    # while PQ is not empty:
     while not pq.isEmpty():
+	    # pop curr_node off of state
         current_node = pq.pop()
+	    # if curr_node is the goal:
         if problem.isGoalState(current_node):
-            # append the path of the goal state to a new heap
-            #return uniform_find_path(current_node, transitions) - not needed, just keeping it here for reference
-            visited_nodes.append(current_node)
-        
-        for i in problem.getSuccessors(current_node):
-            if not i in visited_nodes:
+		    # backtrack through the transitions dictionary and return
+            return find_path(current_node, transitions)
+	    # for next_node, direction, cost in successors of curr_node:
+        for i, direction, cost in problem.getSuccessors(current_node):
+		    # full cost of next node = full cost of curr node + cost
+            full_cost = full_cost[current_node] + cost
+		    # if next_node in transitions: 
+            if i in transitions:
+			    # if stored cost to next node > full cost of next node:
+                if full_cost[i] > full_cost:
+				    # update transitions dictionary
+                    transitions[i] = (current_node, direction)
+				    # update full cost dictionary
+                    full_cost[i] = full_cost
+			    # continue
+            
+		    # else:
+            else:
+			    # add next_node to cost dictionary
+                full_cost.update({i})
+			    # add next_node to transitions dictionary
+                transitions[i] = (current_node, direction)
+			    # add next_node to PQ
                 pq.push(i)
-                transitions.update({current_node:i})
 
 def nullHeuristic(state, problem=None):
     """
