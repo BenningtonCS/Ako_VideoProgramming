@@ -143,12 +143,9 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    # make a dictionary for transitions
     transitions = {}
-    # make a dictionary for costs
     costs = {}
     visited_nodes = []
-    # make a priority queue
     pq = util.PriorityQueue()
     full_cost = 0
     # add the starting state to the PQ with cost 0
@@ -164,7 +161,7 @@ def uniformCostSearch(problem):
 	    # for next_node, direction, cost in successors of curr_node:
         for i, direction, cost in problem.getSuccessors(current_node):
 		    # full cost of next node = full cost of curr node + cost
-            full_cost = full_cost[current_node] + cost
+            full_cost[i] = full_cost[current_node] + cost
 		    # if next_node in transitions: 
             if i in transitions:
 			    # if stored cost to next node > full cost of next node:
@@ -178,7 +175,7 @@ def uniformCostSearch(problem):
 		    # else:
             else:
 			    # add next_node to cost dictionary
-                full_cost.update({i})
+                full_cost[i] = full_cost
 			    # add next_node to transitions dictionary
                 transitions[i] = (current_node, direction)
 			    # add next_node to PQ
@@ -194,7 +191,43 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    transitions = {}
+    costs = {}
+    visited_nodes = []
+    pq = util.PriorityQueue()
+    full_cost = 0
+    # add the starting state to the PQ with cost 0
+    pq.push(problem.getStartState(), 0)
+    # while PQ is not empty:
+    while not pq.isEmpty():
+	    # pop curr_node off of state
+        current_node = pq.pop()
+	    # if curr_node is the goal:
+        if problem.isGoalState(current_node):
+		    # backtrack through the transitions dictionary and return
+            return find_path(current_node, transitions)
+	    # for next_node, direction, cost in successors of curr_node:
+        for i, direction, cost in problem.getSuccessors(current_node):
+		    # full cost of next node = full cost of curr node + cost
+            full_cost[i] = full_cost[current_node] + cost
+		    # if next_node in transitions: 
+            if i in transitions:
+			    # if stored cost to next node > full cost of next node:
+                if full_cost[i] > full_cost:
+				    # update transitions dictionary
+                    transitions[i] = (current_node, direction)
+				    # update full cost dictionary
+                    full_cost[i] = full_cost
+			    # continue
+            
+		    # else:
+            else:
+			    # add next_node to cost dictionary
+                full_cost[i] = full_cost
+			    # add next_node to transitions dictionary
+                transitions[i] = (current_node, direction)
+			    # add next_node to PQ
+                pq.push(i)
 
 
 # Abbreviations

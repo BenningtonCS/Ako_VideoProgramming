@@ -12,46 +12,6 @@ def find_path(goal, transitions):
     backwards_path.reverse()
     return list(backwards_path)
 
-def DepthFirstSearch(problem):
-    visited_nodes = []
-    transitions = {}
-    s = util.Stack()
-    s.push(problem.getStartState())
-    while not s.isEmpty(): 
-        current_node = s.pop()
-        visited_nodes.append(current_node)
-        if problem.isGoalState(current_node):
-            path = find_path(current_node, transitions)
-            return find_path(current_node, transitions)
-            
-
-        for i, direction, cost in problem.getSuccessors(current_node):
-            if not i in visited_nodes:
-                s.push(i)
-                transitions[i] = (current_node, direction)
-
-
-
-
-
-def BreadthFirtsSearch(problem):
-    visited_nodes = []
-    transitions = {}
-    q = util.Queue()
-    q.push(problem.getStartState())
-    while not q.isEmpty(): 
-        current_node = q.pop()
-        visited_nodes.append(current_node)
-        if problem.isGoalState(current_node):
-            path = find_path(current_node, transitions)
-            return find_path(current_node, transitions)
-            
-
-        for i, direction, cost in problem.getSuccessors(current_node):
-            if not i in visited_nodes:
-                q.push(i)
-                transitions[i] = (current_node, direction)
-
 def uniformCostSearch(problem):     
     # make a dictionary for transitions
     transitions = {}
