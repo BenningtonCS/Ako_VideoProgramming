@@ -160,17 +160,18 @@ def uniformCostSearch(problem):
 			    # if stored cost to next node > full cost of next node:
                 if cost[i] > full_cost[i]:
 				    # update transitions dictionary
-                    transitions.update(i)
+                    transitions[i] = (current_node, direction)
 				    # update full cost dictionary
-                    costs.update(i)
+                    costs[i] = (current_node, cost)
 			    # continue
+                continue
             
 		    # else:
             else:
 			    # add next_node to cost dictionary
-                costs.update(i)
+                costs[i] = (current_node, cost)
 			    # add next_node to transitions dictionary
-                transitions.update(i)
+                transitions[i] = (current_node, direction)
 			    # add next_node to PQ
                 pq.update(i)
 
@@ -203,17 +204,17 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 			    # if stored cost to next node > full cost of next node:
                 if cost[i] > full_cost[i]:
 				    # update transitions dictionary
-                    transitions.update(i)
+                    transitions[i] = (current_node, direction)
 				    # update full cost dictionary
-                    costs.update(i)
+                    costs[i] = (current_node, cost)
 			    # continue
             
 		    # else:
             else:
 			    # add next_node to cost dictionary
-                costs.update(i)
+                costs[i] = (current_node, cost)
 			    # add next_node to transitions dictionary
-                transitions.update(i)
+                transitions[i] = (current_node, direction)
 			    # add next_node to PQ
                 pq.update(i + heuristic(problem))
 
