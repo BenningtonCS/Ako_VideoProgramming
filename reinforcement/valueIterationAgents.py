@@ -46,23 +46,44 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
 
-        # for each iteration 
-            # copy the value from values 
+        # for each iteration
+        for i in range (self.iterations):
+            # copy the values from values 
+            new_values = self.values.copy()
             # for each mdp state 
+            for j in mdp.getStates():
                 # if the current state is not a terminal state 
+                if not mdp.isTerminal(j):
                     # set maixmum value as infinity 
+                    max_value = float("-inf")
                     # for each action in possible actions 
-                    # set the starting value to 0 
-                    # for each transition 
-                        # change the starting value 
-                        # if starting value is > than maximum value 
-                            # maximum value = startong value
-                    # else
-                        # for each action 
-                            # set starting value to 0 
-                            # for each transition 
-                                # change the starting value 
-                                # get a reward somehow 
+                    for action in mdp.getPossibleActions():
+                        # set the starting value to 0 
+                        starting_value = 0
+                        # for each transition 
+                        for transition in mdp.getTransitionStatesAndProbs():
+                            # change the starting value 
+                            starting_value += 1
+                            # if starting value is > than maximum value 
+                            if starting_value > max_value:
+                                # maximum value = startong value
+                                max_value = starting_value
+                                # get a reward 
+                                mdp.getReward(max_value)
+                        # else
+                        else:
+                            # for each action 
+                            for action in mdp.getPossibleActions():
+                                # set starting value to 0 
+                                starting_value = 0
+                                # for each transition 
+                                for transition in mdp.getTransitionStatesAndProbs():
+                                    # change the starting value 
+                                    starting_value += 1
+                                    max_value = starting_value
+                                    # get a reward  
+                                    mdp.getReward(max_value)
+                                self.values = starting_value
 
 
     def getValue(self, state):
@@ -90,6 +111,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
+        
         util.raiseNotDefined()
 
     def getPolicy(self, state):
