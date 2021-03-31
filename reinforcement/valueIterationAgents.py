@@ -46,6 +46,14 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
 
+        # for each iteration 
+            # copy the value from values 
+            # for each mdp state 
+                # if the current state is not a terminal state 
+                    # set maixmum value as infinity 
+                    # for each action is possible actions 
+                    # value = 0 
+
 
     def getValue(self, state):
         """
@@ -54,7 +62,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         return self.values[state]
 
 
-    def computeQValueFromValues(self, state, action):
+    def computeQValueFromValues(self, state, action): 
         """
           Compute the Q-value of action in state from the
           value function stored in self.values.
@@ -62,7 +70,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
 
-    def computeActionFromValues(self, state):
+    def computeActionFromValues(self, state): 
         """
           The policy is the best action in the given state
           according to the values currently stored in self.values.
