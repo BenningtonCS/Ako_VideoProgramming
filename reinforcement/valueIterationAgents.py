@@ -51,8 +51,18 @@ class ValueIterationAgent(ValueEstimationAgent):
             # for each mdp state 
                 # if the current state is not a terminal state 
                     # set maixmum value as infinity 
-                    # for each action is possible actions 
-                    # value = 0 
+                    # for each action in possible actions 
+                    # set the starting value to 0 
+                    # for each transition 
+                        # change the starting value 
+                        # if starting value is > than maximum value 
+                            # maximum value = startong value
+                    # else
+                        # for each action 
+                            # set starting value to 0 
+                            # for each transition 
+                                # change the starting value 
+                                # get a reward somehow 
 
 
     def getValue(self, state):
