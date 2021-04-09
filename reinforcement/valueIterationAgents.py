@@ -46,45 +46,18 @@ class ValueIterationAgent(ValueEstimationAgent):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
 
-        # for each iteration
-        for i in range (self.iterations):
-            # copy the values from values 
+        # for every iteration k in iterations
+        for k in range(iterations):
+            # copy the values 
             new_values = self.values.copy()
-            # for each mdp state 
-            for j in mdp.getStates():
-                # if the current state is not a terminal state 
-                if not mdp.isTerminal(j):
-                    # set maixmum value as infinity 
-                    max_value = float("-inf")
-                    # for each action in possible actions 
-                    for action in mdp.getPossibleActions():
-                        # set the starting value to 0 
-                        starting_value = 0
-                        # for each transition 
-                        for transition in mdp.getTransitionStatesAndProbs():
-                            # change the starting value 
-                            starting_value += transition * (self.mdp.getReward(transition, action) + (self.discount * self.values(transition)))
-                            # if starting value is > than maximum value 
-                            if starting_value > max_value:
-                                # maximum value = startong value
-                                max_value = starting_value
-                                # get a reward 
-                                mdp.getReward(max_value)
-                        # else
-                        else:
-                            # for each action 
-                            for action in mdp.getPossibleActions():
-                                # set starting value to 0 
-                                starting_value = 0
-                                # for each transition 
-                                for transition in mdp.getTransitionStatesAndProbs():
-                                    # change the starting value 
-                                    starting_value += transition * (self.mdp.getReward(transition, action) + (self.discount * self.values(transition)))
-                                    max_value = starting_value
-                                    # get a reward  
-                                    mdp.getReward(max_value)
-                                self.values = starting_value
-
+            # for each state in the mdp states 
+            for state in mdp.getStates():
+                # check if it is at terminal state, if it is not
+                if not mdp.isTerminal(state):
+                    # compute the new value for the state from computeQValueFromValues and computeActionFromValues
+                    new_values[state] = self.computeQValueFromValues(state, self.computeActionFromValues(state))
+                # now put the new values as a copy to the values 
+                self.values = new_values.copy()
 
     def getValue(self, state):
         """
@@ -99,9 +72,14 @@ class ValueIterationAgent(ValueEstimationAgent):
           value function stored in self.values.
         """
         "*** YOUR CODE HERE ***"
+        # initiate the q_value as 0 
         q_value = 0
+        # for each transition in mdp.getTransitionStatesAndProbs()
         for transition in mdp.getTransitionStatesAndProbs():
-            q_value += transition * ((self.mdp.getReward(transition, action) + (self.discount * self.getValue(transition))))
+            # q_value = q_value + the second element of the trasnition * the reward from the first element of this transition ( because it is a tuple ) 
+            # and action + (discount and the value of the transition)
+            q_value += transition[1] * ((self.mdp.getReward(transition[0], action) + (self.discount * self.getValue(transition[0]))))
+            # now return the computed q_value
             return q_value
 
     def computeActionFromValues(self, state): 
@@ -114,15 +92,24 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
+        # get all possible actions from mdp.getPossibleActions(state)
         new_possible_actions = self.mdp.getPossibleActions(state)
+        # if the state is not at the terminal 
         if self.mdp.isTerminal(state) == False:
+            # initiate the best_action as the first element of new_possible_actions
             best_action = new_possible_actions[0]
-            best_q_value = self.getQValue(state, bestAction)
-            for action in possibleActions:
-                if self.getQValue(state, action) > bestQ:
-                    bestQ = self.getQValue(state, action)
-                    bestAction = action
-            return bestAction
+            # get the best_q_value from getQValue(state, best_action) because we need to see what the best_action gives us
+            best_q_value = self.getQValue(state, best_action)
+            # for each action in new_possible_actions
+            for action in new_possible_actions:
+                # if the QValue from teh state and action is higher that the best_q_value
+                if self.getQValue(state, action) > best_q_value:
+                    # that becomes the best_q_value
+                    best_q_value = self.getQValue(state, action)
+                    # and the best_action is the action we should go for 
+                    best_action = action
+            # return the best_action
+            return best_action
 
         util.raiseNotDefined()
 
