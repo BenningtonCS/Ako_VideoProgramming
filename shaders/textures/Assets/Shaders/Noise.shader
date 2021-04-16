@@ -92,12 +92,32 @@ Shader "Unlit/Noise"
                 return lerp(upper_edge, lower_edge, smoothstep(0.1, 0.9, frac(coordinates.y)));
             }
 
+            fixed fractalSum(fixed2 coordinates, fixed minimum_f, fixed maximum_f, fixed stepSize)
+            {
+                fixed value = 0;
+                for (fixed f = minimum_f; f < maximum_f; f *= stepSize) 
+                {
+                    value += perlinNoise(coordinates * f) /f;
+                }
+                return value; 
+            }
+
+            fixed turbulence(fixed2 coordinates, fixed minimum_f, fixed maximum_f, fixed stepSize)
+            {
+                fixed value = 0;
+                for (fixed f = minimum_f; f < maximum_f; f *= stepSize) 
+                {
+                    value += abs(perlinNoise(coordinates * f)) /f * 1.5;
+                }
+                return value; 
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 //fixed2 adj_uv = floor(i.uv * 2);
                 //fixed value = sin(i.uv.x * 248992) * 0.5 + 0.5;
                 //fixed value = random01(adj_uv.x * 0.1274 + adj_uv.y * -3.14);
-                fixed value = perlinNoise(i.uv * 10) * 0.4 + 0.3;
+                fixed value = smoothstep(0, 1, turbulence(i.uv, 1, 250, 4));
                 //return fixed4(value.x * 0.5 + 0.5, value.y * 0.5 + 0.5, 0, 1);
                 return lerp(_Color1, _Color2, clamp(value, 0, 1));
             }
