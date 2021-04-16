@@ -1,11 +1,11 @@
-Shader "Unlit/Noise"
+Shader "Unlit/Wiggly Stripes"
 {
     Properties
     {
         _Color1 ("Color 1", Color) = (1, 1, 1, 1)
-        _Color2 ("Color 2", Color) = (0, 0, 0, 1)
-        _Color3 ("Color 3", Color) = (0, 0, 0, 1)
-        _Color4 ("Color 4", Color) = (0, 0, 0, 1)
+        _Color2("Color 2", Color) = (0, 0, 0, 1)
+        _Frequency("Frequency", Range(1, 100)) = 4
+        _Scale("Scale", Range(0, 10)) = 0.5
     }
     SubShader
     {
@@ -37,24 +37,8 @@ Shader "Unlit/Noise"
 
             fixed4 _Color1;
             fixed4 _Color2;
-            fixed4 _Color3;
-            fixed4 _Color4;
-
-            fixed colorMap(fixed x)
-            {
-                fixed adj_x = x * 5;
-                if (adj_x < 1) {
-                    return _Color1;
-                } else if (adj_x < 2) {
-                    return lerp(_Color1, _Color2, frac(adj_x));
-                } else if (adj_x < 3) {
-                    return lerp(_Color2, _Color3, frac(adj_x));
-                } else if (adj_x < 4) {
-                    return lerp(_Color3, _Color4, frac(adj_x));
-                } else {
-                    return _Color4;  
-                }
-            }
+            fixed _Frequency;
+            fixed _Scale;
 
             v2f vert (appdata v)
             {
@@ -132,16 +116,16 @@ Shader "Unlit/Noise"
                 return value; 
             }
 
+            fixed stripes_sinpattern(fixed x, fixed periods)
+            {
+                return sin(x * 3.1415 * 2 * periods);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
-                //fixed2 adj_uv = floor(i.uv * 2);
-                //fixed value = sin(i.uv.x * 248992) * 0.5 + 0.5;
-                //fixed value = random01(adj_uv.x * 0.1274 + adj_uv.y * -3.14);
-                fixed value = fractalSum(i.uv * 15, 1, 10, 10) * 3.1415 + 0.31415;
-
-                //return fixed4(value.x * 0.5 + 0.5, value.y * 0.5 + 0.5, 0, 1);
-                //return lerp(_Color1, _Color2, clamp(value, 0, 1));
-                return colorMap(value);
+                fixed stripes = stripes_sinpattern(i.uv.x + turbulence(i.uv * _Frequency, 4, 5, 6) * _Scale, 5);
+                // fixed stripes = stripes_sinpattern(i.uv.x + turbulence(i.uv * 10, 40, 5, 6), 5); THIS ONE LOOKS JUST LIKE THE STRIPES
+                return lerp(_Color1, _Color2, step(0, stripes));
             }
             ENDCG
         }
