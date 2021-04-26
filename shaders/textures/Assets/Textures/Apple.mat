@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Test texture
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: Apple
+  m_Shader: {fileID: 4800000, guid: 8c68b7bd4d635452fa21c1ca64b99e84, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -74,5 +74,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.9528302, g: 0.13034001, b: 0.13034001, a: 1}
+    - _Color1: {r: 1, g: 0.08944538, b: 0.0047169924, a: 1}
+    - _Color2: {r: 1, g: 0.45286164, b: 0.4009434, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
