@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Apple
-  m_Shader: {fileID: 4800000, guid: 8c68b7bd4d635452fa21c1ca64b99e84, type: 3}
+  m_Shader: {fileID: 4800000, guid: a93f15d0474854634bb669d525e58dca, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -60,13 +60,16 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 1
-    - _Glossiness: 0.473
+    - _Frequency: 74.8
+    - _GlossMapScale: 0.65
+    - _Glossiness: 0.237
     - _GlossyReflections: 1
-    - _Metallic: 0.062
+    - _Metallic: 0.7
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Periods: 1
+    - _Scale: 3.16
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -74,7 +77,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.9528302, g: 0.13034001, b: 0.13034001, a: 1}
-    - _Color1: {r: 1, g: 0.08944538, b: 0.0047169924, a: 1}
-    - _Color2: {r: 1, g: 0.45286164, b: 0.4009434, a: 1}
+    - _Color1: {r: 0.9150943, g: 0.030215396, b: 0.030215396, a: 1}
+    - _Color2: {r: 1, g: 0.4941418, b: 0.39999998, a: 1}
+    - _Color3: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
+    - _Color4: {r: 1, g: 0.05, b: 0.113, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
