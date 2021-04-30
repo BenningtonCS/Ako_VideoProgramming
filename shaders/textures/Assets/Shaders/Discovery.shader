@@ -8,7 +8,8 @@ Shader "Unlit/Discovery"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        //Tags { "RenderType"="Opaque" }
+        Tags {"LightMode" = "ForwardBase"}
         LOD 100
 
         Pass
@@ -20,11 +21,14 @@ Shader "Unlit/Discovery"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "AutoLight.cginc"
+            #include "UnityLightingCommon.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
+                float3 normal: NORMAL;
             };
 
             struct v2f
@@ -32,6 +36,9 @@ Shader "Unlit/Discovery"
                 float2 uv : TEXCOORD0;
                 UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
+                float4 diffuse : COLOR0;
+                float4 specular : COLOR1;
+                float4 edges : COLOR2;
             };
 
             fixed4 _Color1;
@@ -50,6 +57,23 @@ Shader "Unlit/Discovery"
                 o.uv = v.uv;
                 UNITY_TRANSFER_FOG(o,o.vertex);
 
+                float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+                float3 eye = normalize(UnityWorldSpaceViewDir(worldPos));
+
+                float3 worldNormal = UnityObjectToWorldNormal(v.normal);
+                float3 lightVector = _WorldSpaceLightPos0.xyz;
+                fixed howMuchLight = max(0, dot(worldNormal, lightVector));
+                //fixed howMuchLight = 1 - max(0, dot(worldNormal, eye));
+                o.diffuse = howMuchLight * fixed4(1, 1, 1, 1);
+                o.diffuse.rgb += ShadeSH9(float4(worldNormal, 1));
+
+                float3 projection = dot(worldNormal, lightVector) * worldNormal;
+                float3 reflection = 2 * projection - lightVector;
+
+                float howMuchSpecular = max(0, dot(reflection, eye));
+                o.specular = pow(howMuchSpecular, 4) * fixed4(1, 1, 1, 1);
+
+                o.edges = (1 - max(0, dot(worldNormal, eye))) * fixed4(1, 1, 1, 1);
                 return o;
             
             }
@@ -60,7 +84,7 @@ Shader "Unlit/Discovery"
                 float sin_stripe = sin(i.uv.y  * 3.1415 * _Periods % 2);
                 float cos_stripe = cos(i.uv.x  * 3.1415 * _Periods % 2);
 
-                fixed4 col = lerp(_Color1, _Color2, (sin_stripe * cos_stripe));
+                fixed4 col = lerp(_Color1, _Color2, (sin_stripe * cos_stripe)) * i.diffuse + i.specular * 0.8; //+ i.edges * fixed4(0, 0, 0, 1);
 
                 
                 return col;

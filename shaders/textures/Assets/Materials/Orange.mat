@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Wiggly Stripes
+  m_Name: Orange
   m_Shader: {fileID: 4800000, guid: a40d084dae207420e9853c2d8b4f0c75, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -60,7 +60,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Frequency: 8
+    - _Frequency: 43
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -68,7 +68,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Scale: 0.4
+    - _Scale: 1.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -76,9 +76,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 1, g: 0.8938033, b: 0.1462264, a: 1}
-    - _Color2: {r: 0.4716981, g: 0.21341375, b: 0.028924897, a: 1}
-    - _Color3: {r: 0, g: 0, b: 0, a: 1}
-    - _Color4: {r: 0, g: 0, b: 0, a: 1}
+    - _Color1: {r: 1, g: 0.72360015, b: 0.14509803, a: 1}
+    - _Color2: {r: 0.972549, g: 0.56456846, b: 0.031372517, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []

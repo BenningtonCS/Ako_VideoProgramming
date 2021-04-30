@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weird one I discovered
+  m_Name: Fruits
   m_Shader: {fileID: 4800000, guid: a93f15d0474854634bb669d525e58dca, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -67,7 +67,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Periods: 16.4
+    - _Periods: 17.6
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -75,7 +75,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color1: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.3237362, g: 0.709675, b: 0.9150943, a: 0}
+    - _Color1: {r: 0.9622642, g: 0.6263972, b: 0.031772893, a: 1}
+    - _Color2: {r: 0.9622642, g: 0.6130726, b: 0.040850822, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
