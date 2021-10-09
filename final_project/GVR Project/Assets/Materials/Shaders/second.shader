@@ -84,7 +84,7 @@
                 float sin_stripe = sin(i.uv.y  * 3.1415 * _Periods % 2 * _Time);
                 float cos_stripe = cos(i.uv.x  * 3.1415 * _Periods % 2 * _Time);
 
-                fixed4 col = lerp(_Color1, _Color2, (sin_stripe * cos_stripe)* _Time %2);// * i.diffuse; //+ i.specular * 0.8; //+ i.edges * fixed4(0, 0, 0, 1);
+                fixed4 col = lerp(_Color1, _Color2, (sin_stripe * cos_stripe)* _Time %3 * 2);// * i.diffuse; //+ i.specular * 0.8; //+ i.edges * fixed4(0, 0, 0, 1);
 
                 
                 return col;

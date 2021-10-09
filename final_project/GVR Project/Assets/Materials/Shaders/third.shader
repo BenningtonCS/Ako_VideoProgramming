@@ -148,7 +148,7 @@
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed stripes = stripes_sinpattern(i.uv.x + turbulence(i.uv * _Frequency * _Time *10 , 4, 5, 6) * (_Scale * _Time), 5);
+                fixed stripes = stripes_sinpattern(i.uv.x + turbulence(i.uv * _Frequency * (_Time / 5) *10 , 4, 5, 6) * (_Scale * _Time), 5);
                 return lerp(_Color1, _Color2, step(0, stripes));// * i.diffuse + i.specular * 0.8; //+ i.edges * fixed4(0, 0, 0, 1);
             }
             ENDCG
