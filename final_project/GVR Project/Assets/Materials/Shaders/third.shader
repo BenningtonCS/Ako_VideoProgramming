@@ -9,7 +9,6 @@
     }
     SubShader
     {
-        //Tags { "RenderType"="Opaque" }
         Tags {"LightMode" = "ForwardBase"}
         LOD 100
 
@@ -60,7 +59,7 @@
                 float3 worldNormal = UnityObjectToWorldNormal(v.normal);
                 float3 lightVector = _WorldSpaceLightPos0.xyz;
                 fixed howMuchLight = max(0, dot(worldNormal, lightVector));
-                //fixed howMuchLight = 1 - max(0, dot(worldNormal, eye));
+            
                 o.diffuse = howMuchLight * fixed4(1, 1, 1, 1);
                 o.diffuse.rgb += ShadeSH9(float4(worldNormal, 1));
 
@@ -149,7 +148,7 @@
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed stripes = stripes_sinpattern(i.uv.x + turbulence(i.uv * _Frequency * (_Time / 5) *10 , 4, 5, 6) * (_Scale * _Time), 5);
-                return lerp(_Color1, _Color2, step(0, stripes));// * i.diffuse + i.specular * 0.8; //+ i.edges * fixed4(0, 0, 0, 1);
+                return lerp(_Color1, _Color2, step(0, stripes));
             }
             ENDCG
         }
