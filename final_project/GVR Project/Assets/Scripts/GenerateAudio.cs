@@ -14,9 +14,9 @@ using UnityEngine;
     public AudioSource secondSource;
     public AudioSource thirdSource;
     public AudioSource forthSource;
-    public float minWaitBetweenPlays = 0f;
-    public float maxWaitBetweenPlays = 2f;
-    public float waitTimeCountdown = -1f;
+    public float minTransitionTime = 0f;
+    public float maxTransitionTime = 2f;
+    public float transitionTime = -1f;
  
     void Start()
     {
@@ -31,32 +31,28 @@ using UnityEngine;
     {
         if (!firstSource.isPlaying)
         {
-            if (waitTimeCountdown < 0f)
+            if (transitionTime < 0f)
             {
                 firstClip = audioClips[Random.Range(0, audioClips.Count)];
                 secondClip = audioClips[Random.Range(0, audioClips.Count)];
                 thirdClip = audioClips[Random.Range(0, audioClips.Count)];
                 forthClip = audioClips[Random.Range(0, audioClips.Count)];
 
-
                 firstSource.clip = firstClip;
                 secondSource.clip = secondClip;
                 thirdSource.clip = thirdClip;
                 forthSource.clip = forthClip;
-
 
                 firstSource.PlayOneShot(firstClip, 0.7f);
                 secondSource.PlayOneShot(secondClip, 0.7f);
                 thirdSource.PlayOneShot(thirdClip, 0.7f);
                 forthSource.PlayOneShot(forthClip, 0.7f);
 
-
-                //source.Play();
-                waitTimeCountdown = Random.Range(minWaitBetweenPlays, maxWaitBetweenPlays);
+                transitionTime = Random.Range(minTransitionTime, maxTransitionTime);
             }
             else
             {
-                waitTimeCountdown -= Time.deltaTime;
+                transitionTime -= Time.deltaTime;
             }
         }
     }
